@@ -88,16 +88,19 @@ while True:
 
     #ball collides with top
     if ball.ycor() > 280:   #if ball reaches edge
+        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)  
         ball.sety(280)      #stop
         ball.dy *= -1       #bounce off
     
     #ball collides with bottom
     if ball.ycor() < -280:
+        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)  
         ball.sety(-280)
         ball.dy *= -1
 
     #ball collides with right side (left scores)
     if ball.xcor() > 500:
+        winsound.PlaySound("reset.wav", winsound.SND_ASYNC)  
         ball.goto(0,0)      #back to middle
         left_player += 1    #update scoreboard
         score.clear()
@@ -108,6 +111,7 @@ while True:
 
     #ball collides with left side(right scores)
     if ball.xcor() < -500:
+        winsound.PlaySound("reset.wav", winsound.SND_ASYNC)  
         ball.goto(0,0)
         right_player += 1
         score.clear()
@@ -123,19 +127,19 @@ while True:
     #right
     if ((ball.xcor() > 340 and ball.xcor() < 350) and
         (ball.ycor() < rightP.ycor()+50 and ball.ycor() > rightP.ycor()-50)):
-        winsound.PlaySound("play bounce.wav", winsound.SND_ASYNC)  
+        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)  
         ball.setx(340)
         ball.dx *= -1
 
     #left
     if ((ball.xcor() < -340 and ball.xcor() > -350) and
         (ball.ycor() < leftP.ycor()+50 and ball.ycor() > leftP.ycor()-50)):
-        winsound.PlaySound("play bounce.wav", winsound.SND_ASYNC)
+        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
         ball.setx(-340)
         ball.dx *= -1
 
     #end game
-    endscore = 5
+    endscore = 1
     if left_player == endscore or right_player == endscore:
         ball.hideturtle()
         if left_player == endscore:
@@ -144,5 +148,6 @@ while True:
         if right_player == endscore:
             score.goto(0,0)
             score.write("RIGHT PLAYER WINS!", font = 24, align = "center")
+        winsound.PlaySound("gamewin.wav", winsound.SND_ASYNC)
         time.sleep(3)
         exit()
