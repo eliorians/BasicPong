@@ -139,7 +139,7 @@ while True:
         ball.dx *= -1
 
     #end game
-    endscore = 1
+    endscore = 5
     if left_player == endscore or right_player == endscore:
         ball.hideturtle()
         if left_player == endscore:
