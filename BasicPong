@@ -1,5 +1,6 @@
-import turtle;
-import time;
+import turtle
+import winsound
+import time
 
 #screen
 screen = turtle.Screen()
@@ -11,23 +12,23 @@ screen.setup(width=1000, height = 600)
 leftP = turtle.Turtle()
 leftP.speed(0)
 leftP.shape("square")
-leftP.shapesize(stretch_wid=6, stretch_len=2)
+leftP.shapesize(stretch_wid=5, stretch_len=1)
 leftP.color("blue")
 leftP.penup()
-leftP.goto(-400, 0)
+leftP.goto(-350, 0)
 
 #right paddle
 rightP = turtle.Turtle()
 rightP.speed(0)
 rightP.shape("square")
-rightP.shapesize(stretch_wid=6, stretch_len=2)
+rightP.shapesize(stretch_wid=5, stretch_len=1)
 rightP.color("red")
 rightP.penup()
-rightP.goto(400, 0)
+rightP.goto(350, 0)
 
 #ball
 ball = turtle.Turtle()
-ball.speed(30)
+ball.speed(90)
 ball.color("purple")
 ball.shape("circle")
 ball.penup()
@@ -98,37 +99,43 @@ while True:
     #ball collides with right side (left scores)
     if ball.xcor() > 500:
         ball.goto(0,0)      #back to middle
-        ball.dx *= -1       #start to move to scorers side
         left_player += 1    #update scoreboard
         score.clear()
         score.write("Left Player: {}     Right Player: {}".format(left_player, right_player), align = "center", font = 12)
+        time.sleep(1)
+        ball.dx *= -1       #start to move to scorers side
+        
 
     #ball collides with left side(right scores)
     if ball.xcor() < -500:
         ball.goto(0,0)
-        ball.dx *= -1
         right_player += 1
         score.clear()
         score.write("Left Player: {}     Right Player: {}".format(left_player, right_player), align = "center", font = 12)
+        time.sleep(1)
+        ball.dx *= -1
+        
 
     #ball collides with paddle
         #top condition is perimeter for short sides
         #bottomn condition is permiter for long sides
 
     #right
-    if ((ball.xcor() > 360 and ball.xcor() < 370) and
-        (ball.ycor() < rightP.ycor()+45 and ball.ycor() > rightP.ycor()-45)):
-        ball.setx(360)
+    if ((ball.xcor() > 340 and ball.xcor() < 350) and
+        (ball.ycor() < rightP.ycor()+50 and ball.ycor() > rightP.ycor()-50)):
+        winsound.PlaySound("play bounce.wav", winsound.SND_ASYNC)  
+        ball.setx(340)
         ball.dx *= -1
 
     #left
-    if ((ball.xcor() < -360 and ball.xcor() > -370) and
-        (ball.ycor() < leftP.ycor()+45 and ball.ycor() > leftP.ycor()-45)):
-        ball.setx(-360)
+    if ((ball.xcor() < -340 and ball.xcor() > -350) and
+        (ball.ycor() < leftP.ycor()+50 and ball.ycor() > leftP.ycor()-50)):
+        winsound.PlaySound("play bounce.wav", winsound.SND_ASYNC)
+        ball.setx(-340)
         ball.dx *= -1
 
     #end game
-    endscore = 11
+    endscore = 5
     if left_player == endscore or right_player == endscore:
         ball.hideturtle()
         if left_player == endscore:
