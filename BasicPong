@@ -1,0 +1,141 @@
+import turtle;
+import time;
+
+#screen
+screen = turtle.Screen()
+screen.title("Basic Pong")
+screen.bgcolor("black")
+screen.setup(width=1000, height = 600)
+
+#left paddle
+leftP = turtle.Turtle()
+leftP.speed(0)
+leftP.shape("square")
+leftP.shapesize(stretch_wid=6, stretch_len=2)
+leftP.color("blue")
+leftP.penup()
+leftP.goto(-400, 0)
+
+#right paddle
+rightP = turtle.Turtle()
+rightP.speed(0)
+rightP.shape("square")
+rightP.shapesize(stretch_wid=6, stretch_len=2)
+rightP.color("red")
+rightP.penup()
+rightP.goto(400, 0)
+
+#ball
+ball = turtle.Turtle()
+ball.speed(30)
+ball.color("purple")
+ball.shape("circle")
+ball.penup()
+ball.goto(0,0)
+ball.dx = 5
+ball.dy = 5
+
+#initialize score
+left_player = 0
+right_player = 0
+
+#initial score display
+score = turtle.Turtle()
+score.speed(0)
+score.color("white")
+score.penup()
+score.hideturtle()
+score.goto(0, 250)
+score.write("Left Player: 0     Right Player: 0", align = "center", font = 12)
+
+#left paddle movement
+def leftPaddleUp():
+    y = leftP.ycor()
+    y += 20
+    leftP.sety(y)
+
+def leftPaddleDown():
+    y = leftP.ycor()
+    y -= 20
+    leftP.sety(y)
+
+#right paddle movement
+def rightPaddleUp():
+    y = rightP.ycor()
+    y += 20
+    rightP.sety(y)
+
+def rightPaddleDown():
+    y = rightP.ycor()
+    y -= 20
+    rightP.sety(y)
+
+#key binding for paddles
+screen.listen()
+screen.onkeypress(leftPaddleUp, "w")
+screen.onkeypress(leftPaddleDown, "s")
+screen.onkeypress(rightPaddleUp, "Up")
+screen.onkeypress(rightPaddleDown, "Down")
+
+#Main Game Loop
+while True:
+    screen.update()
+
+    #initial ball movement
+    ball.setx(ball.xcor()+ball.dx)
+    ball.sety(ball.ycor()+ball.dy)
+
+    #ball collides with top
+    if ball.ycor() > 280:   #if ball reaches edge
+        ball.sety(280)      #stop
+        ball.dy *= -1       #bounce off
+    
+    #ball collides with bottom
+    if ball.ycor() < -280:
+        ball.sety(-280)
+        ball.dy *= -1
+
+    #ball collides with right side (left scores)
+    if ball.xcor() > 500:
+        ball.goto(0,0)      #back to middle
+        ball.dx *= -1       #start to move to scorers side
+        left_player += 1    #update scoreboard
+        score.clear()
+        score.write("Left Player: {}     Right Player: {}".format(left_player, right_player), align = "center", font = 12)
+
+    #ball collides with left side(right scores)
+    if ball.xcor() < -500:
+        ball.goto(0,0)
+        ball.dx *= -1
+        right_player += 1
+        score.clear()
+        score.write("Left Player: {}     Right Player: {}".format(left_player, right_player), align = "center", font = 12)
+
+    #ball collides with paddle
+        #top condition is perimeter for short sides
+        #bottomn condition is permiter for long sides
+
+    #right
+    if ((ball.xcor() > 360 and ball.xcor() < 370) and
+        (ball.ycor() < rightP.ycor()+45 and ball.ycor() > rightP.ycor()-45)):
+        ball.setx(360)
+        ball.dx *= -1
+
+    #left
+    if ((ball.xcor() < -360 and ball.xcor() > -370) and
+        (ball.ycor() < leftP.ycor()+45 and ball.ycor() > leftP.ycor()-45)):
+        ball.setx(-360)
+        ball.dx *= -1
+
+    #end game
+    endscore = 11
+    if left_player == endscore or right_player == endscore:
+        ball.hideturtle()
+        if left_player == endscore:
+            score.goto(0,0)
+            score.write("LEFT PLAYER WINS!", font = 24, align = "center")
+        if right_player == endscore:
+            score.goto(0,0)
+            score.write("RIGHT PLAYER WINS!", font = 24, align = "center")
+        time.sleep(3)
+        exit()
