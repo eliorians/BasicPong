@@ -1,1 +1,36 @@
-//this is where I will create the two paddles and ball
+import turtle;
+
+#screen
+screen = turtle.Screen()
+screen.title("Basic Pong")
+screen.bgcolor("black")
+screen.setup(width=1000, height = 600)
+
+#left paddle
+leftP = turtle.Turtle()
+leftP.shape("square")
+leftP.shapesize(stretch_wid=6, stretch_len=2)
+leftP.color("red")
+leftP.penup()
+leftP.goto(-400, 0)
+
+#right paddle
+rightP = turtle.Turtle()
+rightP.shape("square")
+rightP.shapesize(stretch_wid=6, stretch_len=2)
+rightP.color("blue")
+rightP.penup()
+rightP.goto(400, 0)
+
+#ball
+ball = turtle.Turtle()
+ball.speed(40)
+ball.color("purple")
+ball.shape("circle")
+ball.penup()
+ball.goto(0,0)
+ball.dx = 5
+ball.dy = -5
+
+#keeps window open until clicked
+turtle.Screen().exitonclick()
